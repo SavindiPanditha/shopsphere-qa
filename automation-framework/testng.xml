@@ -5,7 +5,12 @@
     </listeners>
     <test name="Smoke">
         <classes>
-            <class name="com.shopsphere.qa.tests.SampleTest" />
+            <class name="com.shopsphere.qa.tests.LoginTests" />
+            <class name="com.shopsphere.qa.tests.ProductTests" />
+            <class name="com.shopsphere.qa.tests.CartTests" />
+            <class name="com.shopsphere.qa.tests.CheckoutTests" />
+            <class name="com.shopsphere.qa.tests.NegativeTests" />
+            <class name="com.shopsphere.qa.tests.AdminLoginTests" />
         </classes>
     </test>
 </suite>
