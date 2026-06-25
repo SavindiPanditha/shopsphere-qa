@@ -14,6 +14,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import com.shopsphere.qa.utils.Config;
+import com.shopsphere.qa.utils.DriverManager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -30,6 +31,7 @@ public class BaseTest {
             options.addArguments("--headless=new");
         }
         driver = new ChromeDriver(options);
+        DriverManager.setDriver(driver);
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
@@ -38,6 +40,7 @@ public class BaseTest {
         if (driver != null) {
             driver.quit();
         }
+        DriverManager.clearDriver();
     }
 
     protected void addFirstProductToCart() {
@@ -78,46 +81,46 @@ public class BaseTest {
         );
     }
 
-        protected void openFirstProduct() {
+    protected void openFirstProduct() {
         driver.get(Config.SHOP_URL);
         waitForProductsGrid();
-            List<WebElement> productCards = driver.findElements(By.cssSelector("li.product, .wc-block-grid__product"));
-            for (WebElement card : productCards) {
-                List<WebElement> anchors = card.findElements(By.cssSelector("a"));
-                for (WebElement link : anchors) {
-                    String classes = link.getAttribute("class");
-                    String href = link.getAttribute("href");
-                    if ((classes != null && classes.contains("add_to_cart")) ||
-                            (href != null && href.contains("add-to-cart"))) {
-                        continue;
-                    }
-                    if (href != null && href.contains("/product/")) {
-                        String before = driver.getCurrentUrl();
-                        link.click();
-                        wait.until(d -> !d.getCurrentUrl().equals(before));
-                        waitForAny(
-                                By.cssSelector("body.single-product"),
-                                By.cssSelector(".product"),
-                                By.cssSelector(".summary")
-                        );
-                        return;
-                    }
+        List<WebElement> productCards = driver.findElements(By.cssSelector("li.product, .wc-block-grid__product"));
+        for (WebElement card : productCards) {
+            List<WebElement> anchors = card.findElements(By.cssSelector("a"));
+            for (WebElement link : anchors) {
+                String classes = link.getAttribute("class");
+                String href = link.getAttribute("href");
+                if ((classes != null && classes.contains("add_to_cart")) ||
+                        (href != null && href.contains("add-to-cart"))) {
+                    continue;
+                }
+                if (href != null && href.contains("/product/")) {
+                    String before = driver.getCurrentUrl();
+                    link.click();
+                    wait.until(d -> !d.getCurrentUrl().equals(before));
+                    waitForAny(
+                            By.cssSelector("body.single-product"),
+                            By.cssSelector(".product"),
+                            By.cssSelector(".summary")
+                    );
+                    return;
                 }
             }
-            List<WebElement> productLinks = driver.findElements(By.cssSelector("a[href*='/product/']"));
-            if (!productLinks.isEmpty()) {
-                String before = driver.getCurrentUrl();
-                productLinks.get(0).click();
-                wait.until(d -> !d.getCurrentUrl().equals(before));
-                waitForAny(
-                        By.cssSelector("body.single-product"),
-                        By.cssSelector(".product"),
-                        By.cssSelector(".summary")
-                );
-                return;
-            }
-            throw new SkipException("No product links found on shop page");
         }
+        List<WebElement> productLinks = driver.findElements(By.cssSelector("a[href*='/product/']"));
+        if (!productLinks.isEmpty()) {
+            String before = driver.getCurrentUrl();
+            productLinks.get(0).click();
+            wait.until(d -> !d.getCurrentUrl().equals(before));
+            waitForAny(
+                    By.cssSelector("body.single-product"),
+                    By.cssSelector(".product"),
+                    By.cssSelector(".summary")
+            );
+            return;
+        }
+        throw new SkipException("No product links found on shop page");
+    }
 
     protected void waitForNotices() {
         waitForAny(

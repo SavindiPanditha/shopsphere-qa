@@ -1,8 +1,18 @@
 package com.shopsphere.qa.listeners;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import com.shopsphere.qa.utils.DriverManager;
 
 public class TestListener implements ITestListener {
     @Override
@@ -18,6 +28,19 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         System.out.println("FAIL: " + result.getName());
+        WebDriver driver = DriverManager.getDriver();
+        if (driver instanceof TakesScreenshot) {
+            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            try {
+                Path dir = Paths.get("target", "surefire-reports", "screenshots");
+                Files.createDirectories(dir);
+                Path file = dir.resolve(result.getName() + ".png");
+                Files.write(file, screenshot);
+                System.out.println("Saved failure screenshot: " + file.toAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
