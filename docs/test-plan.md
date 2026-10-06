@@ -1,51 +1,67 @@
 # ShopSphere QA Test Plan
 
 ## 1. Overview
-This test plan defines the QA scope, approach, and deliverables for the ShopSphere WordPress + WooCommerce site used in automation portfolio work.
+This test plan defines the QA scope, approach, and deliverables for the local WordPress + WooCommerce ShopSphere demo site.
 
 ## 2. Objectives
-- Validate core ecommerce user flows (browse, cart, checkout, order).
-- Ensure account features work for guest and registered users.
-- Verify admin product and catalog management.
-- Provide a baseline for automation coverage and regression testing.
+- Validate the current core ecommerce and account flows.
+- Provide a baseline for automated smoke and regression testing.
+- Track planned coverage separately from the current automated suite.
 
-## 3. In Scope
-- Core WooCommerce flows: shop, product, cart, checkout, order confirmation.
-- Account management: register, login, logout, profile basics.
-- Admin product management: create, update, delete product; category assignment.
+## 3. Current Test Scope
+- Registration.
+- Login and logout.
+- Product details.
+- Cart add, quantity update, and remove.
+- Checkout and successful guest checkout.
+- Checkout required-field validation.
+- Invalid login.
+- Admin login.
+- 12 automated tests currently run in the suite.
+- Latest result: 12 passed, 0 failed, 0 skipped.
 
-## 4. Out of Scope
+## 4. Future/Planned Scope
+- Product search.
+- Filtering and sorting.
+- Account updates.
+- Admin product CRUD.
+- Order management.
+- Out-of-stock testing.
+
+## 5. Out of Scope
 - Payment gateways beyond Cash on Delivery.
 - Real shipping integrations or tax services.
 - Production hardening, PCI compliance, and external monitoring.
 
-## 5. Test Environment
+## 6. Test Environment
 - Platform: LocalWP on macOS
-- URL: http://shopsphere.local
+- Application: local WordPress + WooCommerce ShopSphere demo site
+- URL: http://shopspherelocal.local
 - Currency: LKR
-- Browser targets: Chrome (primary), Safari (secondary)
+- Browser: Chrome
 - Roles: Guest, Registered Customer, Admin
+- Automation: Java 17, Maven, Selenium WebDriver, TestNG
 
-## 6. Test Types
-- Functional testing (manual + automated).
+## 7. Test Types
+- Functional testing (automated).
 - Regression testing (automation suite).
-- Smoke testing for each release branch.
+- Smoke testing.
 
-## 7. Entry Criteria
+## 8. Entry Criteria
 - WordPress + WooCommerce installed and running.
 - Products and categories available.
 - Shipping and Cash on Delivery configured.
 
-## 8. Exit Criteria
+## 9. Exit Criteria
 - All critical and high defects resolved or accepted.
 - Smoke suite pass rate >= 95%.
-- Automation suite runs without blocking errors.
+- Automation suite runs without blocking errors and produces a result report.
 
-## 9. Risks and Mitigations
+## 10. Risks and Mitigations
 - Local environment instability: keep site snapshot and backup.
 - Plugin updates causing regressions: lock versions during testing.
 - Data resets: maintain a test data seeding checklist.
 
-## 10. Deliverables
+## 11. Deliverables
 - Test plan, scenarios, test cases, RTM, bug report template.
-- Automation framework and execution reports (later steps).
+- Automation framework and execution reports.

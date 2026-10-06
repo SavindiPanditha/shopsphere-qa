@@ -1,6 +1,8 @@
 # Bug Report Template
 
-## Summary
+## Bug ID
+
+## Title
 Short, clear description of the issue.
 
 ## Environment
@@ -9,10 +11,14 @@ Short, clear description of the issue.
 - URL:
 - Build/Version:
 
+## Preconditions
+
 ## Steps to Reproduce
 1.
 2.
 3.
+
+## Test Data
 
 ## Expected Result
 What should happen.
@@ -20,11 +26,19 @@ What should happen.
 ## Actual Result
 What actually happened.
 
-## Severity / Priority
-- Severity: Blocker / Critical / Major / Minor / Trivial
-- Priority: P0 / P1 / P2 / P3
+## Severity
+Blocker / Critical / Major / Minor / Trivial
 
-## Attachments
+## Priority
+P0 / P1 / P2 / P3
+
+## Status
+New / Open / In Progress / Resolved / Closed
+
+## Reproducibility
+Always / Sometimes / Once
+
+## Evidence / Attachments
 - Screenshot or video
 - Logs (if any)
 
