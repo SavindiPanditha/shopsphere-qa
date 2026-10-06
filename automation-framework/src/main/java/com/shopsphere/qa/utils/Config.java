@@ -14,6 +14,8 @@ public final class Config {
 
     public static final String ADMIN_USER = getEnv("SHOPSPHERE_ADMIN_USER", "");
     public static final String ADMIN_PASS = getEnv("SHOPSPHERE_ADMIN_PASS", "");
+    public static final String TEST_USER = getEnv("SHOPSPHERE_TEST_USER", "");
+    public static final String TEST_PASS = getEnv("SHOPSPHERE_TEST_PASS", "");
 
     private Config() {
     }

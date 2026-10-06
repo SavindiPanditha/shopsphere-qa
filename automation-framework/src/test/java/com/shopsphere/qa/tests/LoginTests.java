@@ -15,6 +15,29 @@ import com.shopsphere.qa.utils.Config;
 
 public class LoginTests extends BaseTest {
     @Test
+    public void loginWithValidCredentials() {
+        if (Config.TEST_USER.isBlank() || Config.TEST_PASS.isBlank()) {
+            throw new SkipException("Test customer credentials not provided via environment variables");
+        }
+
+        ensureLoggedOut();
+        driver.get(Config.ACCOUNT_URL);
+
+        List<WebElement> loginUser = driver.findElements(By.cssSelector("#username, input[name='username'], input[name='email']"));
+        List<WebElement> loginPass = driver.findElements(By.cssSelector("#password, input[name='password']"));
+        if (loginUser.isEmpty() || loginPass.isEmpty()) {
+            throw new SkipException("Login form not available");
+        }
+
+        loginUser.get(0).sendKeys(Config.TEST_USER);
+        loginPass.get(0).sendKeys(Config.TEST_PASS);
+        driver.findElement(By.cssSelector("button[name='login']")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".woocommerce-MyAccount-content")));
+        Assert.assertTrue(driver.getPageSource().contains("Hello"), "Account greeting should be visible after login");
+    }
+
+    @Test
     public void registerNewCustomer() {
         ensureLoggedOut();
         driver.get(Config.ACCOUNT_URL);
