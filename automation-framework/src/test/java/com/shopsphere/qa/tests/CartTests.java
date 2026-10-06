@@ -5,6 +5,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
@@ -13,6 +14,47 @@ import com.shopsphere.qa.base.BaseTest;
 import com.shopsphere.qa.utils.Config;
 
 public class CartTests extends BaseTest {
+    @Test
+    public void removeProductFromCart() {
+        addFirstProductToCart();
+        driver.get(Config.CART_URL);
+
+        By cartItemSelector = By.cssSelector("tr.cart_item, .wc-block-cart-items__row");
+        waitForAny(
+            By.cssSelector("form.woocommerce-cart-form"),
+            By.cssSelector(".cart"),
+            By.cssSelector(".wc-block-cart"),
+            By.cssSelector(".cart_totals")
+        );
+        wait.until(driver -> !driver.findElements(cartItemSelector).isEmpty());
+        Assert.assertFalse(
+            driver.findElements(cartItemSelector).isEmpty(),
+            "Cart item should be present before removal"
+        );
+
+        By removeSelector = By.cssSelector(
+            "a.remove, button.wc-block-cart-item__remove-link, button[aria-label^='Remove'][aria-label*='cart']"
+        );
+        wait.until(driver -> !driver.findElements(removeSelector).isEmpty());
+        wait.until(ExpectedConditions.elementToBeClickable(removeSelector)).click();
+
+        wait.until(driver -> driver.findElements(cartItemSelector).isEmpty());
+        By emptyCartSelector = By.cssSelector(
+            "p.cart-empty, .wc-block-cart__empty-cart, .wc-block-cart__empty-cart__title"
+        );
+        By emptyCartTextSelector = By.xpath("//*[contains(normalize-space(), 'Your cart is currently empty')]");
+        waitForAny(emptyCartSelector, emptyCartTextSelector);
+        Assert.assertTrue(
+            driver.findElements(cartItemSelector).isEmpty(),
+            "Cart item should no longer be present after removal"
+        );
+        Assert.assertTrue(
+            !driver.findElements(emptyCartSelector).isEmpty()
+                || !driver.findElements(emptyCartTextSelector).isEmpty(),
+            "Empty cart state should be visible after removal"
+        );
+    }
+
     @Test
     public void updateCartQuantity() {
         addFirstProductToCart();
